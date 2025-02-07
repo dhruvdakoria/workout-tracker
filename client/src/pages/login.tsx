@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Login() {
   const [, navigate] = useLocation();
@@ -15,6 +16,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
 
   // Handle email confirmation
   useEffect(() => {
@@ -118,10 +120,28 @@ export default function Login() {
         if (profileError) throw profileError;
       }
 
+      // Force a refresh of the auth state
+      await queryClient.invalidateQueries({ queryKey: ['auth'] });
+      
+      // Wait for the session to be established
+      const waitForSession = async () => {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          // If no session, wait a bit and try again
+          await new Promise(resolve => setTimeout(resolve, 100));
+          return waitForSession();
+        }
+        return session;
+      };
+
+      await waitForSession();
+      
       toast({
         title: "Success",
         description: "Logged in successfully",
       });
+
+      // Navigate immediately after session is confirmed
       navigate("/");
     } catch (error) {
       console.error('Login error:', error);

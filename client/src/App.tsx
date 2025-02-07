@@ -18,6 +18,23 @@ import { useEffect } from "react";
 import { useTheme, applyTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
+// Initialize theme immediately
+const initializeTheme = () => {
+  const theme = localStorage.getItem('theme-storage');
+  if (theme) {
+    try {
+      const { state } = JSON.parse(theme);
+      applyTheme(state.theme);
+    } catch (e) {
+      applyTheme('dark');
+    }
+  } else {
+    applyTheme('dark');
+  }
+};
+
+initializeTheme();
+
 function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
   const [, navigate] = useLocation();
   const isMobile = useIsMobile();
