@@ -5,6 +5,7 @@ import { Tables } from "@/lib/supabase";
 import { supabase } from "@/lib/supabase";
 import { queryClient } from "@/lib/queryClient";
 import { ExerciseForm } from "@/components/workout/ExerciseForm";
+import { ExerciseList } from "@/components/workout/ExerciseList";
 import { SetEntry } from "@/components/workout/SetEntry";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -424,7 +425,7 @@ export default function LogWorkout() {
             <DialogHeader>
               <DialogTitle>Add New Exercise</DialogTitle>
             </DialogHeader>
-            <ExerciseForm onSubmit={(data) => createExerciseMutation.mutate(data)} />
+            <ExerciseForm onSubmit={(data) => createExerciseMutation.mutate(data)} isSubmitting={createExerciseMutation.isPending} />
           </DialogContent>
         </Dialog>
       </div>
@@ -509,24 +510,17 @@ export default function LogWorkout() {
             <CardHeader>
               <CardTitle>Available Exercises</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent>
               {loadingExercises ? (
-                <div className="flex justify-center">
+                <div className="flex justify-center p-4">
                   <Loader2 className="h-6 w-6 animate-spin" />
                 </div>
-              ) : (
-                exercises?.map((exercise) => (
-                  <Button
-                    key={exercise.id}
-                    variant="outline"
-                    className="w-full justify-start"
-                    onClick={() => handleAddExercise(exercise)}
-                  >
-                    <Plus className="mr-2 h-4 w-4" />
-                    {exercise.name}
-                  </Button>
-                ))
-              )}
+              ) : exercises ? (
+                <ExerciseList 
+                  exercises={exercises} 
+                  onSelectExercise={(exercise) => handleAddExercise(exercise)}
+                />
+              ) : null}
             </CardContent>
           </Card>
 
@@ -541,15 +535,29 @@ export default function LogWorkout() {
                 </div>
               ) : (
                 workouts?.map((workout) => (
-                  <Button
-                    key={workout.id}
-                    variant="outline"
-                    className="w-full justify-between"
-                    onClick={() => loadWorkout(workout)}
-                  >
-                    <span>{format(parseISO(workout.date), 'PPP')}</span>
-                    <span>{workout.sets.length} sets</span>
-                  </Button>
+                  <div key={workout.id} className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      className="w-full justify-between"
+                      onClick={() => loadWorkout(workout)}
+                    >
+                      <span>{format(parseISO(workout.date), 'PPP')}</span>
+                      <span>{workout.sets.length} sets</span>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="shrink-0"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (confirm('Are you sure you want to delete this workout?')) {
+                          deleteWorkoutMutation.mutate(workout.id);
+                        }
+                      }}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
                 ))
               )}
             </CardContent>
