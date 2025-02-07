@@ -120,6 +120,15 @@ export default function LogWorkout() {
   // Delete workout mutation
   const deleteWorkoutMutation = useMutation({
     mutationFn: async (workoutId: string) => {
+      // First delete all sets associated with this workout
+      const { error: setsError } = await supabase
+        .from("sets")
+        .delete()
+        .eq("workout_id", workoutId);
+      
+      if (setsError) throw setsError;
+
+      // Then delete the workout itself
       const { error } = await supabase
         .from("workouts")
         .delete()
@@ -132,6 +141,14 @@ export default function LogWorkout() {
       toast({
         title: "Success",
         description: "Workout deleted successfully",
+      });
+    },
+    onError: (error: Error) => {
+      console.error('Delete workout error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete workout. Please try again.",
+        variant: "destructive",
       });
     },
   });
