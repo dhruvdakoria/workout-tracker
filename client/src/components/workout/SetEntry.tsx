@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
@@ -17,8 +17,23 @@ export type SetEntryProps = {
 };
 
 export function SetEntry({ sets, onAddSet, onRemoveSet }: SetEntryProps) {
-  const [weight, setWeight] = useState("");
-  const [reps, setReps] = useState("");
+  const [weight, setWeight] = useState(() => {
+    const lastSet = sets[sets.length - 1];
+    return lastSet ? lastSet.weight.toString() : "";
+  });
+  const [reps, setReps] = useState(() => {
+    const lastSet = sets[sets.length - 1];
+    return lastSet ? lastSet.reps.toString() : "";
+  });
+
+  // Update weight and reps when sets change (e.g., when a set is removed)
+  useEffect(() => {
+    const lastSet = sets[sets.length - 1];
+    if (lastSet) {
+      setWeight(lastSet.weight.toString());
+      setReps(lastSet.reps.toString());
+    }
+  }, [sets]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,8 +42,9 @@ export function SetEntry({ sets, onAddSet, onRemoveSet }: SetEntryProps) {
     
     if (!isNaN(weightNum) && !isNaN(repsNum)) {
       onAddSet(weightNum, repsNum);
-      // Keep the weight the same but clear reps for easy multiple set entry
-      setReps("");
+      // Keep both weight and reps for easy multiple set entry
+      setWeight(weightNum.toString());
+      setReps(repsNum.toString());
     }
   };
 
