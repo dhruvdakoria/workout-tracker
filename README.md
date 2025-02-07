@@ -1,88 +1,133 @@
-# Workout Tracker App
+# 💪 Workout Tracker App
 
-A modern workout tracking application built with React, Vite, and Supabase.
+A modern, full-stack workout tracking application built with React, TypeScript, and Supabase. Track your workouts, monitor progress, and achieve your fitness goals with an intuitive and responsive interface.
 
-## Tech Stack
+## 🌟 Features
 
-### Frontend
-- React 18 with TypeScript
-- Vite for build tooling
-- TailwindCSS for styling
-- Radix UI components
-- React Query for data fetching
-- React Hook Form for form handling
+- **User Authentication**: Secure login and registration system using Supabase Auth
+- **Workout Logging**: 
+  - Log exercises with sets, reps, and weights
+  - Track rest periods between sets
+  - Add notes to workouts
+  - Real-time validation and data persistence
+- **Progress Tracking**:
+  - Visual charts and graphs showing workout history
+  - Track personal records (PRs)
+  - View historical workout data
+- **Dashboard**:
+  - Overview of recent workouts
+  - Quick access to common exercises
+  - Progress summaries and statistics
+- **Mobile-First Design**:
+  - Responsive UI that works seamlessly on all devices
+  - Touch-friendly interface
+  - Optimized for use during workouts
 
-### Backend
-- Supabase (PostgreSQL Database)
-- Database URL: https://hreynnwxahhtuebohctk.supabase.co
+## 🛠️ Tech Stack
 
-## Setup Instructions
+- **Frontend**:
+  - React 18 with TypeScript
+  - Vite for fast development and building
+  - TailwindCSS for styling
+  - Shadcn UI components
+  - React Query for data fetching and caching
+  - React Router for navigation
+  - React Hook Form for form management
+  - Recharts for data visualization
 
-1. **Install Dependencies**
-   ```bash
-   npm install
-   ```
+- **Backend**:
+  - Supabase for database and authentication
+  - PostgreSQL for data storage
+  - Row Level Security for data protection
 
-2. **Environment Setup**
-   Create a `.env` file in the root directory with:
-   ```
-   DATABASE_URL=postgres://[YOUR-SUPABASE-CONNECTION-STRING]
-   ```
-   Get the connection string from your Supabase project:
-   - Go to Project Settings > Database
-   - Find the "Connection string" section
-   - Copy the connection string and replace [YOUR-PASSWORD] with your database password
-
-3. **Database Migrations**
-   ```bash
-   npm run db:push
-   ```
-   This will push the database schema to your Supabase instance.
-
-4. **Development**
-   ```bash
-   npm run dev
-   ```
-   This will start the development server.
-
-5. **Production Build**
-   ```bash
-   npm run build
-   npm start
-   ```
-
-## Project Structure
+## 📁 Project Structure
 
 ```
 workout-tracker/
-├── client/           # Frontend React application
-├── shared/           # Shared types and utilities
-├── drizzle.config.ts # Database configuration
-├── vite.config.ts    # Vite configuration
-└── package.json      # Project dependencies and scripts
+├── client/                 # Frontend React application
+│   ├── src/
+│   │   ├── components/    # Reusable UI components
+│   │   ├── pages/         # Main application pages
+│   │   ├── lib/          # Utility functions and configurations
+│   │   ├── hooks/        # Custom React hooks
+│   │   └── App.tsx       # Main application component
+├── shared/                # Shared TypeScript types and schemas
+├── supabase/             # Supabase configurations and migrations
+└── ...configuration files
 ```
 
-## Database Schema
+### Key Components and Files
 
-The database schema is defined in `shared/schema.ts` using Drizzle ORM.
+- `pages/log-workout.tsx`: Main workout logging interface
+- `pages/dashboard.tsx`: User dashboard with workout summaries
+- `pages/progress.tsx`: Progress tracking and visualization
+- `components/workout/`: Exercise and set tracking components
+- `lib/supabase.ts`: Supabase client configuration
+- `lib/queryClient.ts`: React Query configuration
+- `schema.ts`: Database and type definitions
 
-## Development Guidelines
+## 🚀 Getting Started
 
-1. All frontend code goes in the `client/` directory
-2. Shared types and utilities should be placed in `shared/`
-3. Use the provided UI components from Radix UI for consistency
-4. Follow the TypeScript patterns established in the codebase
+1. **Prerequisites**:
+   - Node.js 16+
+   - npm or yarn
+   - Supabase account
 
-## Deployment
+2. **Installation**:
+   ```bash
+   # Clone the repository
+   git clone https://github.com/dhruvdakoria/workout-tracker.git
+   cd workout-tracker
 
-The application can be deployed to any platform that supports Node.js applications. The frontend is built using Vite and served through the same process.
+   # Install dependencies
+   npm install
 
-## Contributing
+   # Set up environment variables
+   cp .env.example .env
+   # Fill in your Supabase credentials
+   ```
 
-1. Create a new branch for your feature
-2. Make your changes
-3. Submit a pull request
+3. **Development**:
+   ```bash
+   npm run dev
+   ```
 
-## License
+4. **Build**:
+   ```bash
+   npm run build
+   ```
 
-MIT 
+## 🔐 Environment Variables
+
+Required environment variables in `.env`:
+- `VITE_SUPABASE_URL`: Your Supabase project URL
+- `VITE_SUPABASE_ANON_KEY`: Your Supabase anon/public key
+
+## 🧹 Code Cleanup Recommendations
+
+The following files/components can be removed or consolidated:
+
+1. `hooks/use-mobile.ts` and `hooks/use-mobile.tsx` - Duplicate files, keep only the `.ts` version
+2. Several unused UI components in `components/ui/` that aren't actively used in the application:
+   - `breadcrumb.tsx`
+   - `carousel.tsx`
+   - `collapsible.tsx`
+   - `input-otp.tsx`
+   - `menubar.tsx`
+   - `pagination.tsx`
+   - `resizable.tsx`
+   These components were included from the shadcn UI library but aren't currently used in the application.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## �� Acknowledgments
+
+- [Shadcn UI](https://ui.shadcn.com/) for the beautiful component library
+- [Supabase](https://supabase.com/) for the backend infrastructure
+- [React Query](https://tanstack.com/query/latest) for data management 
