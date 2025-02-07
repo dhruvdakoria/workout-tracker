@@ -15,6 +15,7 @@ import { supabase } from "@/lib/supabase";
 import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
 import { useTheme, applyTheme } from "@/lib/theme";
+import { cn } from "@/lib/utils";
 
 function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
   const [, navigate] = useLocation();
@@ -55,8 +56,15 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
       {isMobile ? <MobileNav /> : <Sidebar />}
-      <main className={`${isMobile ? 'pt-16' : 'pl-64'} p-4`}>
-        {children}
+      <main className={cn(
+        "min-h-screen transition-all duration-200 ease-in-out",
+        isMobile 
+          ? "pt-16 px-4" 
+          : "ml-64 p-8"
+      )}>
+        <div className="max-w-[1400px] mx-auto">
+          {children}
+        </div>
       </main>
     </div>
   );

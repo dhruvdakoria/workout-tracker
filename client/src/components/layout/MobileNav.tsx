@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Dumbbell, BarChart2, PlusCircle, Menu, LogOut, User } from "lucide-react";
+import { Dumbbell, BarChart2, PlusCircle, Menu, LogOut, User, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -38,7 +38,7 @@ export default function MobileNav() {
   };
 
   const links = [
-    { href: "/", icon: Dumbbell, label: "Dashboard" },
+    { href: "/", icon: LayoutDashboard, label: "Dashboard" },
     { href: "/log", icon: PlusCircle, label: "Log Workout" },
     { href: "/progress", icon: BarChart2, label: "Progress" },
   ];
@@ -53,7 +53,10 @@ export default function MobileNav() {
         </SheetTrigger>
         <SheetContent side="left" className="w-72">
           <SheetHeader className="border-b pb-4">
-            <SheetTitle>Strength Log</SheetTitle>
+            <SheetTitle className="flex items-center gap-2">
+              <Dumbbell className="h-5 w-5" />
+              Workout Tracker
+            </SheetTitle>
           </SheetHeader>
           <div className="py-4">
             <nav className="space-y-1">
@@ -76,7 +79,12 @@ export default function MobileNav() {
         </SheetContent>
       </Sheet>
 
-      <h1 className="text-lg font-semibold">Strength Log</h1>
+      <Link href="/">
+        <a className="text-lg font-semibold hover:text-primary transition-colors flex items-center gap-2">
+          <Dumbbell className="h-5 w-5" />
+          Workout Tracker
+        </a>
+      </Link>
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Dumbbell, BarChart2, PlusCircle, LogOut, User } from "lucide-react";
+import { Dumbbell, BarChart2, PlusCircle, LogOut, User, LayoutDashboard } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
@@ -31,7 +31,7 @@ export default function Sidebar() {
   };
 
   const links = [
-    { href: "/", icon: Dumbbell, label: "Dashboard" },
+    { href: "/", icon: LayoutDashboard, label: "Dashboard" },
     { href: "/log", icon: PlusCircle, label: "Log Workout" },
     { href: "/progress", icon: BarChart2, label: "Progress" },
   ];
@@ -39,7 +39,12 @@ export default function Sidebar() {
   return (
     <div className="fixed left-0 top-0 h-screen w-64 bg-background border-r border-border flex flex-col">
       <div className="p-6 border-b border-border">
-        <h1 className="text-2xl font-bold">Strength Log</h1>
+        <Link href="/">
+          <a className="text-2xl font-bold hover:text-primary transition-colors flex items-center gap-2">
+            <Dumbbell className="h-6 w-6" />
+            Workout Tracker
+          </a>
+        </Link>
       </div>
 
       <nav className="flex-1 px-2 py-4">

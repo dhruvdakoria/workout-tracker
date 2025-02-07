@@ -411,9 +411,9 @@ export default function LogWorkout() {
   }
 
   return (
-    <div className="container mx-auto py-6 space-y-6">
+    <div className="space-y-8">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Log Workout</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Log Workout</h1>
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="outline">
@@ -430,13 +430,13 @@ export default function LogWorkout() {
         </Dialog>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="space-y-6">
-          <Card>
+          <Card className="shadow-sm">
             <CardHeader>
               <CardTitle>Current Workout</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
               <div className="flex items-center space-x-4">
                 <Popover>
                   <PopoverTrigger asChild>
@@ -460,36 +460,38 @@ export default function LogWorkout() {
                 placeholder="Workout notes..."
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                className="min-h-[100px]"
+                className="min-h-[100px] resize-none"
               />
 
-              {activeExercises.map((active) => (
-                <Card key={active.exercise.id}>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      {active.exercise.name}
-                    </CardTitle>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleRemoveExercise(active.exercise.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </CardHeader>
-                  <CardContent>
-                    <SetEntry
-                      sets={active.sets}
-                      onAddSet={(weight, reps) =>
-                        handleAddSet(active.exercise.id, weight, reps)
-                      }
-                      onRemoveSet={(index) =>
-                        handleRemoveSet(active.exercise.id, index)
-                      }
-                    />
-                  </CardContent>
-                </Card>
-              ))}
+              <div className="space-y-4">
+                {activeExercises.map((active) => (
+                  <Card key={active.exercise.id} className="border border-border/50">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-base font-medium">
+                        {active.exercise.name}
+                      </CardTitle>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleRemoveExercise(active.exercise.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </CardHeader>
+                    <CardContent>
+                      <SetEntry
+                        sets={active.sets}
+                        onAddSet={(weight, reps) =>
+                          handleAddSet(active.exercise.id, weight, reps)
+                        }
+                        onRemoveSet={(index) =>
+                          handleRemoveSet(active.exercise.id, index)
+                        }
+                      />
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
 
               <Button
                 className="w-full"
@@ -506,7 +508,7 @@ export default function LogWorkout() {
         </div>
 
         <div className="space-y-6">
-          <Card>
+          <Card className="shadow-sm">
             <CardHeader>
               <CardTitle>Available Exercises</CardTitle>
             </CardHeader>
@@ -524,11 +526,11 @@ export default function LogWorkout() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="shadow-sm">
             <CardHeader>
               <CardTitle>Previous Workouts</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent className="space-y-3">
               {loadingWorkouts ? (
                 <div className="flex justify-center">
                   <Loader2 className="h-6 w-6 animate-spin" />
@@ -538,11 +540,11 @@ export default function LogWorkout() {
                   <div key={workout.id} className="flex gap-2">
                     <Button
                       variant="outline"
-                      className="w-full justify-between"
+                      className="w-full justify-between hover:bg-accent/50"
                       onClick={() => loadWorkout(workout)}
                     >
                       <span>{format(parseISO(workout.date), 'PPP')}</span>
-                      <span>{workout.sets.length} sets</span>
+                      <span className="text-muted-foreground">{workout.sets.length} sets</span>
                     </Button>
                     <Button
                       variant="ghost"
